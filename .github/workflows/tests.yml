@@ -1,0 +1,28 @@
+name: brew test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "Formula/**"
+      - ".github/workflows/tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@v4
+
+      - name: Audit formula
+        run: brew audit --strict --formula ./Formula/brevo.rb
+
+      - name: Install formula from source
+        run: brew install --build-from-source --formula ./Formula/brevo.rb
+
+      - name: Test formula
+        run: brew test --formula ./Formula/brevo.rb

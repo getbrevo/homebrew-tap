@@ -17,12 +17,20 @@ jobs:
     steps:
       - name: Check out tap
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # `brew audit/install/test [path ...]` is disabled in current Homebrew —
+      # the formula must be referenced by name. Tap the checked-out repo so it
+      # resolves as `getbrevo/tap/brevo`.
+      - name: Tap the checked-out repo
+        run: brew tap getbrevo/tap "$GITHUB_WORKSPACE"
 
       - name: Audit formula
-        run: brew audit --strict --formula ./Formula/brevo.rb
+        run: brew audit --strict --online getbrevo/tap/brevo
 
       - name: Install formula from source
-        run: brew install --build-from-source --formula ./Formula/brevo.rb
+        run: brew install --build-from-source getbrevo/tap/brevo
 
       - name: Test formula
-        run: brew test --formula ./Formula/brevo.rb
+        run: brew test getbrevo/tap/brevo

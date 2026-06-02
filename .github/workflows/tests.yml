@@ -1,0 +1,36 @@
+name: brew test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "Formula/**"
+      - ".github/workflows/tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      # `brew audit/install/test [path ...]` is disabled in current Homebrew —
+      # the formula must be referenced by name. Tap the checked-out repo so it
+      # resolves as `getbrevo/tap/brevo`.
+      - name: Tap the checked-out repo
+        run: brew tap getbrevo/tap "$GITHUB_WORKSPACE"
+
+      - name: Audit formula
+        run: brew audit --strict --online getbrevo/tap/brevo
+
+      - name: Install formula from source
+        run: brew install --build-from-source getbrevo/tap/brevo
+
+      - name: Test formula
+        run: brew test getbrevo/tap/brevo

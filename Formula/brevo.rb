@@ -3,8 +3,8 @@ require "language/node"
 class Brevo < Formula
   desc "Developer CLI — create, manage apps and OAuth integrations"
   homepage "https://developers.brevo.com/docs/cli-reference"
-  url "https://registry.npmjs.org/@getbrevo/cli/-/cli-1.1.1.tgz"
-  sha256 "03051c0b22e26f640fee9e9cbca9dc56fecf8dace7864b95f0ed884f0a4579c2"
+  url "https://registry.npmjs.org/@getbrevo/cli/-/cli-2.0.0.tgz"
+  sha256 "a1bef1fd5f0f828ee2d5c43fab6fcfccfe261175de7109cb4c27987aee227ba0"
   license "MIT"
 
   depends_on "node"

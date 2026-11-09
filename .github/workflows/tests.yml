@@ -26,6 +26,11 @@ jobs:
       - name: Tap the checked-out repo
         run: brew tap getbrevo/tap "$GITHUB_WORKSPACE"
 
+      # Current Homebrew refuses to load a formula from an untrusted tap. This is
+      # the CI checkout of our own tap, so trusting it here is safe.
+      - name: Trust the tap
+        run: brew trust getbrevo/tap
+
       - name: Audit formula
         run: brew audit --strict --online getbrevo/tap/brevo
 
